@@ -88,8 +88,8 @@ arianaGrande.songs;
 > circular reference
 
 Here, we've got a two way dependency. The `Song` class is passed an instance of
-`Artist` when created. Since the `Artist` instance carries around its `get` and
-`set` methods, we can use them in the `Song` constructor.
+`Artist` when created. Since the `Artist` instance carries around its getter and
+setter methods, we can use them in the `Song` constructor.
 
 With this set up, `artist.songs` serves as a way to maintain consistent data -
 when a song is created, it is always added to the array of songs for the artist
