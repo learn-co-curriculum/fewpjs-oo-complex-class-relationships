@@ -90,13 +90,13 @@ we could visually represent this relationship as follows:
 
 <img src="https://curriculum-content.s3.amazonaws.com/fewpjs/fewpjs-class-relationships/artist_album_song.png" width: 50% />
 
-The arrows represents the dependencies between `Artist`, `Album` and `Song`. In
+The arrows represent the dependencies between `Artist`, `Album` and `Song`. In
 this configuration, from an `Artist` instance, we can access any associated
-albums. Through those albums we can access any associated songs their songs. A
+albums. Through those albums, we can access any associated songs. A
 song, however, does not know the album it belongs to, and an album does not know
 its artist.
 
-What about an alternative set up? It could be argued that a music collection is made up of albums - albums do _have_ an artist and songs. Maybe the `Album` class should maintain the relationships? That might look like the following:
+What about an alternative set up? It could be argued that a collection of music is _actually_ made up of albums primarily - albums have both an artist and songs. Maybe the `Album` class should maintain the relationships? That might look like the following:
 
 ```js
 // now, the Artist and Song classes only serves up their own info
@@ -161,9 +161,9 @@ do not know about their `Album` instance.
 
 <img src="https://curriculum-content.s3.amazonaws.com/fewpjs/fewpjs-class-relationships/album_artist_song.png" width: 50% />
 
-## Using Two-Way Dependencies
+## Considering Two-Way Dependencies
 
-There is another option here to consider. We could argue that the three classes
+There are other options we could choose. We could argue that the three classes
 should be _dependent upon each other_. Maybe a song should know its album and
 artist, an artist should know their songs and albums, and an album should know
 its artist and songs:
@@ -184,7 +184,7 @@ additional logic to ensure all sources of information are kept consistent. This
 usually makes the code _more_ complicated than any value a two-way dependency
 might provide.
 
-Two-way dependencies create a stronger coupling, and strong coupling tends to
+Two-way dependencies strengthen coupling, and strong coupling tends to
 make code less flexible and harder to update.
 
 ## Applying the Single Responsibility Principle to the Problem
@@ -195,7 +195,8 @@ at all? Let's go back to the original design:
 
 <img src="https://curriculum-content.s3.amazonaws.com/fewpjs/fewpjs-class-relationships/artist_album_song.png" width: 50% />
 
-How might we change this so that `Artist` is not dependent on `Album`, and `Album` is not dependent on `Song`?
+How might we change this so that `Artist` is not dependent on `Album`, and
+`Album` is not dependent on `Song`?
 
 Think about it this way - what are the responsibilities of `Artist`, `Album` and `Song` in this example?
 
@@ -205,7 +206,8 @@ Think about it this way - what are the responsibilities of `Artist`, `Album` and
 - An `Album` instance keeps track of associated `Song` instances
 - A `Song` instance serves up its own info, `title`
 
-_Should_ an `Artist` instance need to keep track of its `Albums`? Should any of these classes need keep track of any others?
+_Should_ an `Artist` instance need to keep track of its `Albums`? Should any of
+these classes need keep track of any others?
 
 Seems like this might violate the single responsibility principle!
 
@@ -214,11 +216,13 @@ it makes the most sense that this responsibility is just to serve up data about
 themselves. This would make our classes highly cohesive.
 
 It means, though, that we need to create a fourth class - a class that that
-serves to join an `Artist`, an `Album` and many `Songs`. At this point, we'll
-have to move away from classes that represent things in the real world.
+serves to join instances of an `Artist`, an `Album` and many `Songs`. At this
+point, we'll have to move away from classes that represent things in the real
+world.
 
-Instead, we need a class that only serves to establish the relationship
-between an artist, an album and its songs. This class acts as a sort of 'container' - an object _comprised_ of an `Artist`, an `Album` and `Song` instances.
+Instead, we need a class that only serves to establish the relationship between
+an artist, an album and its songs. This class acts as a sort of 'container' - an
+object _comprised_ of an `Artist`, an `Album` and `Song` instances:
 
 <img src="https://curriculum-content.s3.amazonaws.com/fewpjs/fewpjs-class-relationships/record_container.png" width: 50% />
 
@@ -300,6 +304,10 @@ maintained the single responsibility principle! Although `RecordContainer` is
 dependent on three classes, since `Artist`, `Album` and `Song` are not dependent
 on anything, coupling is still weak overall.
 
+Instead of having to write a lot of custom logic in our classes (as we might if
+writing a two-way dependency mentioned earlier), _all_ four classes are generic
+and easy to read.
+
 `RecordContainer` serves as a sort of connector, forming a _unit_ comprised of
 itself and the `Artist`, `Album` and `Song` classes. Since it maintains the
 relationship, and therefore access to `Artist`, `Album`, and `Song` instance
@@ -308,12 +316,17 @@ data.
 
 ## Conclusion
 
-In Object Orientation, we can design our classes and their relationships in any
-way we choose. If we strive to maintain high cohesion, weak coupling, and follow
-the single responsibility principle, we may need to utilize additional classes
-to handle abstract concepts such as a relationship. In general, fewer
-dependencies minimizes complicated relationships. More classes can help divide
-responsibilities, making your code easier to understand and maintain.
+Object Orientation allows us represent real world relationships, which can make
+it easier to understand and model in our heads. We _can_ create dependencies
+that mirror real world relationships - an album _has_ an artist and songs.
+Object Oriented design suggests something else, however. If we strive to
+maintain high cohesion, weak coupling, and follow the single responsibility
+principle, we begin to move away from classes _strictly_ representing real world
+things. We may need to utilize additional classes to handle abstract concepts,
+such as a relationship.
+
+When an Object Oriented application becomes large and complex, however,
+following good design principles will lead to easier to understand code.
 
 ## Resources
 
